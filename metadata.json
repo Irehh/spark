@@ -1,0 +1,15 @@
+{
+  "name": "Spark",
+  "description": "A premium, sophisticated dating application focused on genuine connections and user safety.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "Real-time Chat",
+    "Swipe Discovery",
+    "Safety Center",
+    "Push Notifications"
+  ]
+}
