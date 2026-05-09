@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Not, In } from 'typeorm';
-import { User } from './entities/user.entity.ts';
-import { Like, Match } from '../match/entities/match.entity.ts';
+import { User } from '../user/entities/user.entity';
+import { Like, Match } from '../match/entities/match.entity';
 
 @Injectable()
 export class DiscoveryService {

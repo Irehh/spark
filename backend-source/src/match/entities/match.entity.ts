@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, Index } from 'typeorm';
-import { User } from '../user/entities/user.entity.ts';
+import { User } from '../../user/entities/user.entity';
 
 @Entity('likes')
 @Index(['fromUser', 'toUser'], { unique: true })

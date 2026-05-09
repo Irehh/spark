@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './entities/user.entity.ts';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -48,6 +48,6 @@ export class UserService {
       // Example: if (action.type === 'LIKE') { ... }
       syncedCount++;
     }
-    return { success: true, syncedCount, un-synced: 0 };
+    return { success: true, syncedCount, unsynced: 0 };
   }
 }

@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, UseGuards, Request } from '@nestjs/common';
-import { DiscoveryService } from './discovery.service.ts';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
+import { DiscoveryService } from './discovery.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('api/discovery')
 @UseGuards(JwtAuthGuard)

@@ -1,6 +1,6 @@
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
-import { SubscriptionService } from './subscription.service.ts';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
+import { SubscriptionService } from './subscription.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 // Normally you'd add an @Roles('admin') guard
 @Controller('api/admin/features')

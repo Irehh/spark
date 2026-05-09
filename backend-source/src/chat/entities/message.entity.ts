@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
-import { User } from '../user/entities/user.entity.ts';
-import { Match } from '../match/entities/match.entity.ts';
+import { User } from '../../user/entities/user.entity';
+import { Match } from '../../match/entities/match.entity';
 
 @Entity('messages')
 export class Message {

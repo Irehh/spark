@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { VerifyEmailTemplate } from './templates/verify-email.template.ts';
-import { ResetPasswordTemplate } from './templates/reset-password.template.ts';
+import { VerifyEmailTemplate } from './templates/verify-email.template';
+import { ResetPasswordTemplate } from './templates/reset-password.template';
 
 @Injectable()
 export class EmailService {

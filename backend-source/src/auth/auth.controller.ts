@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseGuards, Request, UnauthorizedException, Get, Query, Req, Res } from '@nestjs/common';
-import { AuthService } from './auth.service.ts';
+import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import { RecaptchaGuard } from '../common/guards/recaptcha.guard.ts';
+import { RecaptchaGuard } from '../common/guards/recaptcha.guard';
 
 @Controller('api/auth')
 export class AuthController {

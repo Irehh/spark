@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthService } from './auth.service.ts';
-import { AuthController } from './auth.controller.ts';
-import { UserModule } from '../user/user.module.ts';
-import { JwtStrategy } from './strategies/jwt.strategy.ts';
-import { GoogleStrategy } from './strategies/google.strategy.ts';
-import { FacebookStrategy } from './strategies/facebook.strategy.ts';
-import { User } from '../user/entities/user.entity.ts';
-import { EmailModule } from '../email/email.module.ts';
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
+import { UserModule } from '../user/user.module';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { GoogleStrategy } from './strategies/google.strategy';
+import { FacebookStrategy } from './strategies/facebook.strategy';
+import { User } from '../user/entities/user.entity';
+import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [

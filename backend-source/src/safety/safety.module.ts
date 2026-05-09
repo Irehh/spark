@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Report, Block } from './entities/safety.entity.ts';
-import { SafetyService } from './safety.service.ts';
-import { SafetyController } from './safety.controller.ts';
+import { Report, Block } from './entities/safety.entity';
+import { SafetyService } from './safety.service';
+import { SafetyController } from './safety.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Report, Block])],

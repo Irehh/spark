@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
-import { User } from '../user/entities/user.entity.ts';
+import { User } from '../../user/entities/user.entity';
 
 @Entity('notifications')
 export class Notification {

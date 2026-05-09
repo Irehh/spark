@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, UseGuards, Request } from '@nestjs/common';
-import { FinanceService } from './finance.service.ts';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
-import { TransactionType } from './entities/transaction.entity.ts';
+import { FinanceService } from './finance.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { TransactionType } from './entities/transaction.entity';
 
 @Controller('api/finance')
 @UseGuards(JwtAuthGuard)
@@ -26,6 +26,7 @@ export class FinanceController {
   @Post('spend')
   async spend(@Request() req, @Body('amount') amount: number, @Body('description') description: string) {
     const wallet = await this.financeService.getWallet(req.user.id);
-    return this.financeService.processTransaction(wallet.id, amount, TransactionType.DEBIT, \`SPEND_\${Date.now()}\`, description);
+    const reference = `SPEND_${Date.now()}`;
+    return this.financeService.processTransaction(wallet.id, amount, TransactionType.DEBIT, reference, description);
   }
 }
