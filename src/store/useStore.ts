@@ -47,9 +47,14 @@ export const useStore = create<AppState>((set, get) => ({
     try {
       const res = await api.get('/discovery');
       const data = res.data;
-      set({ discoveryProfiles: data, isDiscoveryLoading: false });
-    } catch (err) {
-      set({ error: 'Failed to fetch profiles', isDiscoveryLoading: false });
+      if (!Array.isArray(data)) {
+        console.error('Invalid response format for discovery profiles:', data);
+        set({ discoveryProfiles: [], isDiscoveryLoading: false, error: 'Invalid response format' });
+        return;
+      }
+      set({ discoveryProfiles: data, isDiscoveryLoading: false, error: null });
+    } catch (err: any) {
+      set({ error: err.message || 'Failed to fetch profiles', isDiscoveryLoading: false });
     }
   },
 
@@ -84,6 +89,11 @@ export const useStore = create<AppState>((set, get) => ({
     try {
       const res = await api.get('/matches');
       const data = res.data;
+      if (!Array.isArray(data)) {
+        console.error('Invalid response format for matches:', data);
+        set({ matches: [], isMatchesLoading: false });
+        return;
+      }
       set({ matches: data, isMatchesLoading: false });
     } catch (err) {
       console.error(err);

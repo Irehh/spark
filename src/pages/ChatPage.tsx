@@ -125,10 +125,10 @@ const ChatPage = () => {
             className="flex items-center space-x-5 p-5 bg-dark-900 rounded-[32px] border border-white/5 shadow-xl hover:bg-dark-800 transition-all cursor-pointer group"
            >
               <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg group-hover:scale-105 transition-transform">
-                <img src={m.user.images[0]} className="w-full h-full object-cover" />
+                <img src={m?.user?.images?.[0] || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800'} className="w-full h-full object-cover" />
               </div>
               <div className="flex-1">
-                <h3 className="font-bold text-white text-lg">{m.user.name}</h3>
+                <h3 className="font-bold text-white text-lg">{m?.user?.name || 'User'}</h3>
                 <p className="text-gray-500 text-sm truncate font-medium">Click to open conversation</p>
               </div>
               <ChevronLeft size={20} className="text-gray-700 rotate-180" />
@@ -156,10 +156,10 @@ const ChatPage = () => {
             className="flex items-center space-x-4 cursor-pointer"
           >
             <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-brand-red/30">
-              <img src={match?.user.images[0]} className="w-full h-full object-cover" />
+              <img src={match?.user?.images?.[0] || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800'} className="w-full h-full object-cover" />
             </div>
             <div>
-              <h3 className="font-bold text-white leading-tight">{match?.user.name}</h3>
+              <h3 className="font-bold text-white leading-tight">{match?.user?.name || 'User'}</h3>
               <div className="flex items-center text-[10px] text-emerald-500 space-x-1.5 uppercase font-black tracking-[0.2em]">
                 <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10b981]" />
                 <span>Active</span>

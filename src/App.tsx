@@ -85,7 +85,7 @@ const ActivityPanel = () => {
         <div className="flex -space-x-3">
           {matches.slice(0, 5).map((match, i) => (
             <div key={match.id} className="w-12 h-12 rounded-full border-2 border-dark-900 overflow-hidden shadow-xl" style={{ zIndex: 10 - i }}>
-              <img src={match.user.images[0]} className="w-full h-full object-cover" />
+              <img src={match?.user?.images?.[0] || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800'} className="w-full h-full object-cover" />
             </div>
           ))}
           {matches.length > 5 && (

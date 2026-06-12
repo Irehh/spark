@@ -80,11 +80,11 @@ export default function MatchesPage() {
                 onClick={() => navigate(`/chat/${match.id}`)}
                 className="relative aspect-[3/4] rounded-[32px] overflow-hidden cursor-pointer group shadow-2xl border border-white/5"
               >
-                <img src={match.user.images[0]} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <img src={match?.user?.images?.[0] || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800'} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent p-5 flex flex-col justify-end">
                   <div className="flex items-center text-white space-x-1.5 mb-1">
-                    <span className="font-bold text-base">{match.user.name}</span>
-                    {match.user.verified && <ShieldCheck size={16} className="text-brand-blue" fill="currentColor" />}
+                    <span className="font-bold text-base">{match?.user?.name || 'User'}</span>
+                    {match?.user?.verified && <ShieldCheck size={16} className="text-brand-blue" fill="currentColor" />}
                   </div>
                   <div className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em] flex items-center space-x-1.5">
                     <Flame size={12} fill="currentColor" />

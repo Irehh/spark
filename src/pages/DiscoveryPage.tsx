@@ -30,8 +30,8 @@ const ProfileCard = ({ profile, onSwipe }: any) => {
     >
       <div className="relative w-full h-full bg-dark-900 rounded-[40px] overflow-hidden shadow-2xl shadow-black/80 border border-white/10">
         <img
-          src={profile.images[0]}
-          alt={profile.name}
+          src={profile.images?.[0] || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800'}
+          alt={profile.name || 'User'}
           className="w-full h-full object-cover pointer-events-none"
         />
         
@@ -239,7 +239,7 @@ const DiscoveryPage = () => {
                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6" className="w-full h-full object-cover" />
                 </div>
                 <div className="w-36 h-36 rounded-full border-4 border-emerald-400 overflow-hidden shadow-[0_0_50px_rgba(52,211,153,0.3)] relative z-0">
-                   <img src={showMatch.images[0]} className="w-full h-full object-cover" />
+                   <img src={showMatch?.images?.[0] || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800'} className="w-full h-full object-cover" />
                 </div>
               </div>
               <h2 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-red to-amber-300 italic mb-4 leading-tight">IT'S A MATCH!</h2>
