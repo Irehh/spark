@@ -29,6 +29,11 @@ NestJS adheres to modular architecture. Modules (e.g., Auth, User, Match, Financ
 - **Matching & Chat**: Standard double-opt-in matching system. If User A likes B, and B likes A, a Match record is created. Then, they are granted access to a Chat room.
 - **Wallet & Subscriptions**: Simulates an in-app economy. Users can deposit funds via Mock Stripe checkout and use wallet balances or subscriptions to unlock premium capabilities (e.g., read receipts, stealth mode).
 
+## Comprehensive Backend Documentation
+
+For an elaborate overview, logic specifications, and a detailed list of all REST and WebSocket endpoints in the NestJS application, please refer to the dedicated backend documentation:
+👉 [**Backend API Documentation (`/backend-source/API_DOCS.md`)**](./backend-source/API_DOCS.md)
+
 ## Redis: Why, What, and How
 
 ### What is Redis?
@@ -42,6 +47,26 @@ Redis is an in-memory data structure store, used mostly as a caching layer or me
 
 ### How it Connects
 The application references Redis via the `RedisService` inside `src/common/redis.service.ts` using the `ioredis` library. It initializes a connection securely based on your `.env` coordinates (`REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD`). 
+
+### Email Sending Architecture
+
+To handle transactional emails (like password resets, welcome emails, or match notifications), the NestJS backend utilizes `@nestjs-modules/mailer` (the official community module supported for NestJS which wraps `nodemailer`).
+
+1. **EmailModule & EmailService**: Found in `backend-source/src/email/`. `EmailModule` configures `MailerModule.forRootAsync` by injecting `ConfigService` reading directly from the environment variables (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`).
+2. **Configuration**: The SMTP transporter is instantiated natively by NestJS on App compilation.
+3. **Templates**: Basic HTML templates are dynamically populated with user data (e.g., reset tokens) from `backend-source/src/email/templates/`.
+
+#### Setting up the local Email Provider
+To send actual emails locally or in production, add your SMTP credentials to your `.env` configuration file. A common pattern for development is to use a test service like Mailtrap or a Gmail application password.
+
+```env
+# Email / SMTP Configuration
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587                     # Usually 587 for TLS, or 465 if SMTP_SECURE is true
+SMTP_SECURE=false                 # Set to false for 587
+SMTP_USER=your_email@gmail.com
+SMTP_PASSWORD=your_email_password_or_app_password
+```
 
 ## Connecting Backend to Frontend Locally
 
@@ -99,14 +124,17 @@ npm run start:dev
 The NestJS server will start on `http://localhost:3000`.
 
 ### 5. Running the Frontend Subsystem
+
+When testing with your real NestJS backend locally, you must run the Vite dev server directly. This prevents the project's default mock Express server (`server.ts`) from occupying port 3000 and intercepting your API calls.
+
 From a new terminal window:
 ```bash
 # Setup correct .env variable for Vite to target the backend API
 echo "VITE_API_URL=http://localhost:3000/api" > .env
 echo "VITE_SOCKET_URL=http://localhost:3000" >> .env
 
-# Run the frontend server
-npm run dev
+# Run Vite directly instead of 'npm run dev' to bypass the mock server
+npx vite
 ```
 The frontend application will be active over Vite locally (typically `http://localhost:5173`).
 

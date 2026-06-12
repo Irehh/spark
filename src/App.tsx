@@ -13,6 +13,8 @@ import ProfilePage from './pages/ProfilePage';
 import SafetyCenter from './pages/SafetyCenter';
 import { AdminDashboard } from './pages/AdminDashboard'; // Added AdminDashboard import
 import { WalletPage } from './pages/WalletPage';
+import { EditProfilePage } from './pages/EditProfilePage';
+import { PreferencesPage } from './pages/PreferencesPage';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -154,6 +156,32 @@ const BottomNav = () => {
   );
 };
 
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+
+// Layout Wrappers
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="flex h-screen bg-dark-950 text-white font-sans overflow-hidden">
+      <Sidebar />
+      <main className="flex-1 lg:max-w-4xl mx-auto w-full relative h-screen overflow-y-auto pb-16 lg:pb-0">
+        {children}
+      </main>
+      <ActivityPanel />
+      <BottomNav />
+    </div>
+  );
+};
+
+const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="min-h-screen bg-dark-950 text-white font-sans overflow-hidden">
+      {children}
+    </div>
+  );
+};
+
 export default function App() {
   const fetchDiscovery = useStore(state => state.fetchDiscovery);
 
@@ -169,25 +197,26 @@ export default function App() {
 
   return (
     <Router>
-      <div className="flex min-h-screen bg-dark-950 text-white font-sans overflow-x-hidden">
-        <Sidebar />
-        <main className="flex-1 lg:max-w-4xl mx-auto w-full relative min-h-screen">
-          <AnimatePresence mode="wait">
-            <Routes>
-              <Route path="/" element={<DiscoveryPage />} />
-              <Route path="/matches" element={<MatchesPage />} />
-              <Route path="/chat/:matchId?" element={<ChatPage />} />
-              <Route path="/notifications" element={<NotificationPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/safety" element={<SafetyCenter />} />
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/wallet" element={<WalletPage />} />
-            </Routes>
-          </AnimatePresence>
-          <BottomNav />
-        </main>
-        <ActivityPanel />
-      </div>
+      <AnimatePresence mode="wait">
+        <Routes>
+          {/* Auth Routes */}
+          <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
+          <Route path="/register" element={<AuthLayout><RegisterPage /></AuthLayout>} />
+          <Route path="/reset-password" element={<AuthLayout><ResetPasswordPage /></AuthLayout>} />
+
+          {/* App Routes */}
+          <Route path="/" element={<AppLayout><DiscoveryPage /></AppLayout>} />
+          <Route path="/matches" element={<AppLayout><MatchesPage /></AppLayout>} />
+          <Route path="/chat/:matchId?" element={<AppLayout><ChatPage /></AppLayout>} />
+          <Route path="/notifications" element={<AppLayout><NotificationPage /></AppLayout>} />
+          <Route path="/profile" element={<AppLayout><ProfilePage /></AppLayout>} />
+          <Route path="/safety" element={<AppLayout><SafetyCenter /></AppLayout>} />
+          <Route path="/admin" element={<AppLayout><AdminDashboard /></AppLayout>} />
+          <Route path="/wallet" element={<AppLayout><WalletPage /></AppLayout>} />
+          <Route path="/edit-profile" element={<AppLayout><EditProfilePage /></AppLayout>} />
+          <Route path="/preferences" element={<AppLayout><PreferencesPage /></AppLayout>} />
+        </Routes>
+      </AnimatePresence>
     </Router>
   );
 }

@@ -16,6 +16,7 @@ interface AppState {
   sendChatMessage: (matchId: string, text: string) => Promise<void>;
   addNotification: (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => void;
   markNotificationRead: (id: string) => void;
+  updateProfile: (updates: Partial<UserProfile>) => void;
 }
 
 export const useStore = create<AppState>((set, get) => ({
@@ -114,6 +115,12 @@ export const useStore = create<AppState>((set, get) => ({
   markNotificationRead: (id) => {
     set(state => ({
       notifications: state.notifications.map(n => n.id === id ? { ...n, read: true } : n)
+    }));
+  },
+
+  updateProfile: (updates) => {
+    set(state => ({
+      user: state.user ? { ...state.user, ...updates } : null
     }));
   },
 }));
