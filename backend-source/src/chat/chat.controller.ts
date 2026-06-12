@@ -1,8 +1,8 @@
 import { Controller, Get, Param, UseGuards, Request } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Message } from './entities/message.entity.ts';
+import { Message } from './entities/message.entity';
 
 @Controller('api/chat')
 @UseGuards(JwtAuthGuard)

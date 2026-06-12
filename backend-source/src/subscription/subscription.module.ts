@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Subscription } from './entities/subscription.entity.ts';
-import { FeatureToggle } from './entities/feature-toggle.entity.ts';
-import { SubscriptionService } from './subscription.service.ts';
-import { SubscriptionController } from './subscription.controller.ts';
-import { AdminFeatureController } from './admin.controller.ts';
-import { UserModule } from '../user/user.module.ts';
-import { User } from '../user/entities/user.entity.ts';
+import { Subscription } from './entities/subscription.entity';
+import { FeatureToggle } from './entities/feature-toggle.entity';
+import { SubscriptionService } from './subscription.service';
+import { SubscriptionController } from './subscription.controller';
+import { AdminFeatureController } from './admin.controller';
+import { UserModule } from '../user/user.module';
+import { User } from '../user/entities/user.entity';
 
 @Module({
   imports: [

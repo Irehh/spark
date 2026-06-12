@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Subscription } from './entities/subscription.entity.ts';
-import { FeatureToggle } from './entities/feature-toggle.entity.ts';
-import { User } from '../user/entities/user.entity.ts';
+import { Subscription } from './entities/subscription.entity';
+import { FeatureToggle } from './entities/feature-toggle.entity';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class SubscriptionService {

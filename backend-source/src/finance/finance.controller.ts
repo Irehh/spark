@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, UseGuards, Request } from '@nestjs/common';
-import { FinanceService } from './finance.service.ts';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
-import { TransactionType } from './entities/transaction.entity.ts';
+import { FinanceService } from './finance.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { TransactionType } from './entities/transaction.entity';
 
 @Controller('api/finance')
 @UseGuards(JwtAuthGuard)

@@ -1,14 +1,14 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { User } from './user/entities/user.entity.ts';
-import { Like, Match } from './match/entities/match.entity.ts';
-import { Message } from './chat/entities/message.entity.ts';
-import { Report, Block } from './safety/entities/safety.entity.ts';
-import { Notification } from './notification/entities/notification.entity.ts';
-import { Subscription } from './subscription/entities/subscription.entity.ts';
-import { FeatureToggle } from './subscription/entities/feature-toggle.entity.ts';
-import { Wallet } from './finance/entities/wallet.entity.ts';
-import { Transaction } from './finance/entities/transaction.entity.ts';
+import { User } from './user/entities/user.entity';
+import { Like, Match } from './match/entities/match.entity';
+import { Message } from './chat/entities/message.entity';
+import { Report, Block } from './safety/entities/safety.entity';
+import { Notification } from './notification/entities/notification.entity';
+import { Subscription } from './subscription/entities/subscription.entity';
+import { FeatureToggle } from './subscription/entities/feature-toggle.entity';
+import { Wallet } from './finance/entities/wallet.entity';
+import { Transaction } from './finance/entities/transaction.entity';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',

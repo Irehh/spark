@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, UseGuards, Request, Param } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Notification } from './entities/notification.entity.ts';
+import { Notification } from './entities/notification.entity';
 
 @Controller('api/notifications')
 @UseGuards(JwtAuthGuard)

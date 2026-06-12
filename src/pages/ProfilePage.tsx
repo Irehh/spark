@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Settings, Shield, Camera, Edit3, Heart, Lock, LogOut, ChevronRight, Moon, Sun, CheckCircle2, MapPin, Star } from 'lucide-react';
+import { Settings, Shield, Camera, Lock, LogOut, ChevronRight, Moon, Sun, CheckCircle2, MapPin, Sparkles } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -8,133 +8,129 @@ const ProfilePage = () => {
   const { user } = useStore();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isDarkMode, setIsDarkMode] = useState(true);
 
   const viewProfile = location.state?.profile || user;
-  const isOwnProfile = viewProfile.id === user?.id;
+  const isOwnProfile = viewProfile?.id === user?.id;
+
+  if (!viewProfile) return null;
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="max-w-xl mx-auto pb-20"
+      className="max-w-md mx-auto pb-24 min-h-screen bg-black"
     >
-      <div className="relative">
-        <div className="h-96 overflow-hidden relative">
-          <img 
-            src={viewProfile?.images[0]} 
-            className="w-full h-full object-cover blur-2xl opacity-20 scale-125" 
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/80 to-transparent" />
-        </div>
+      {/* Editorial Hero Image */}
+      <div className="relative h-[65vh] w-full">
+        <img 
+          src={viewProfile.images[0]} 
+          alt="Profile"
+          className="w-full h-full object-cover" 
+        />
+        {/* Soft, deep gradient fade into the black background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black" />
+        
+        {isOwnProfile && (
+          <button 
+            onClick={() => navigate('/edit-profile')}
+            className="absolute top-6 right-6 w-12 h-12 bg-white/10 backdrop-blur-md text-white rounded-full flex items-center justify-center border border-white/20 z-20 hover:bg-white/20 transition-all"
+          >
+            <Camera size={20} />
+          </button>
+        )}
 
-        <div className="absolute top-24 left-0 right-0 flex flex-col items-center">
-            <div className="relative">
-              <div className="w-48 h-48 rounded-[56px] overflow-hidden border-4 border-dark-800 shadow-[0_0_80px_rgba(0,0,0,0.8)] relative z-10 p-1 bg-dark-800">
-                 <img src={viewProfile?.images[0]} className="w-full h-full object-cover rounded-[50px]" />
-              </div>
-              {isOwnProfile && (
-                <button className="absolute bottom-[-10px] right-[-10px] w-12 h-12 bg-brand-red text-white rounded-2xl shadow-2xl flex items-center justify-center border-4 border-dark-950 z-20 hover:scale-110 active:scale-95 transition-transform">
-                  <Camera size={20} />
-                </button>
-              )}
-            </div>
-            
-            <div className="mt-10 text-center px-8">
-              <div className="flex items-center justify-center space-x-3">
-                <h1 className="text-4xl font-black text-white tracking-tighter">
-                  {viewProfile?.name}, {viewProfile?.age}
-                </h1>
-                {viewProfile?.verified && <CheckCircle2 size={28} className="text-brand-blue" fill="currentColor" strokeWidth={3} />}
-              </div>
-              <div className="flex items-center justify-center text-gray-500 font-bold text-sm mt-2 mb-6 uppercase tracking-widest">
-                <MapPin size={16} className="mr-2 text-brand-red" />
-                {viewProfile?.location}
-              </div>
-              <p className="text-gray-400 text-base leading-relaxed max-w-sm mx-auto font-medium italic">
-                "{viewProfile?.bio}"
-              </p>
-            </div>
+        {/* Display Typography */}
+        <div className="absolute bottom-0 left-0 w-full px-8 pb-6">
+          <div className="flex items-center space-x-3 mb-1">
+            <h1 className="font-serif text-6xl text-white font-bold tracking-tight leading-none">
+              {viewProfile.name}
+            </h1>
+            <span className="font-sans text-3xl text-white/50 font-light mt-2">{viewProfile.age}</span>
+          </div>
+          <div className="flex items-center text-white/70 font-medium text-xs tracking-[0.2em] uppercase mt-4 space-x-2">
+            <MapPin size={14} className="text-brand-red" />
+            <span>{viewProfile.location}</span>
+            {viewProfile.verified && (
+              <>
+                <span className="w-1 h-1 bg-white/30 rounded-full mx-2" />
+                <span className="flex items-center text-brand-blue space-x-1">
+                  <CheckCircle2 size={14} fill="currentColor" className="text-brand-blue" />
+                  <span>Verified</span>
+                </span>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="mt-64 px-8 space-y-10">
-        <div className="grid grid-cols-3 gap-3">
-           {viewProfile?.interests.map(interest => (
-             <div key={interest} className="p-4 bg-dark-950 border border-white/5 rounded-2xl flex flex-col items-center justify-center space-y-2 shadow-xl hover:bg-dark-900 transition-colors">
-                <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">{interest}</span>
-             </div>
-           ))}
+      <div className="px-8 mt-6 space-y-10">
+        {/* Bio Section */}
+        <div className="relative">
+           <div className="absolute -left-4 top-0 text-white/5 font-serif text-8xl leading-none">"</div>
+           <p className="text-white/80 text-lg leading-relaxed font-serif italic pl-4">
+             {viewProfile.bio}
+           </p>
         </div>
 
+        {/* Interests - Pill style */}
+        <div>
+          <h3 className="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-4">Interests</h3>
+          <div className="flex flex-wrap gap-2">
+             {viewProfile.interests.map((interest: string) => (
+               <span key={interest} className="px-5 py-2.5 rounded-full border border-white/20 text-white text-xs font-semibold tracking-wider hover:bg-white hover:text-black transition-colors cursor-pointer">
+                  {interest}
+               </span>
+             ))}
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="pt-8 border-t border-white/10">
         {isOwnProfile ? (
-          <div className="space-y-4">
-             <h3 className="text-xs font-black text-gray-600 uppercase tracking-[0.3em] mb-6 pl-2">Security & Control</h3>
+          <div className="space-y-2">
+             <h3 className="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-6">Account Settings</h3>
              
-             <button 
-              onClick={() => navigate('/safety')}
-              className="w-full p-6 bg-dark-900 rounded-[32px] border border-white/5 shadow-2xl flex items-center justify-between group active:scale-[0.98] transition-all hover:bg-dark-800"
-             >
-                <div className="flex items-center space-x-5">
-                  <div className="w-14 h-14 bg-brand-blue/10 text-brand-blue rounded-2xl flex items-center justify-center">
-                    <Shield size={28} strokeWidth={2.5} />
-                  </div>
-                  <div className="text-left">
-                    <h4 className="font-bold text-white text-lg tracking-tight">Safety Center</h4>
-                    <p className="text-[10px] text-gray-500 font-black tracking-[0.1em] uppercase">VERIFIED STATUS: SECURE</p>
-                  </div>
-                </div>
-                <ChevronRight size={24} className="text-gray-700 group-hover:text-white transition-colors" />
-             </button>
-
-             <button className="w-full p-6 bg-dark-900 rounded-[32px] border border-white/5 shadow-2xl flex items-center justify-between group active:scale-[0.98] transition-all hover:bg-dark-800">
-                <div className="flex items-center space-x-5">
-                  <div className="w-14 h-14 bg-brand-red/10 text-brand-red rounded-2xl flex items-center justify-center">
-                    <Settings size={28} strokeWidth={2.5} />
-                  </div>
-                  <div className="text-left">
-                    <h4 className="font-bold text-white text-lg tracking-tight">Discovery Labs</h4>
-                    <p className="text-[10px] text-gray-500 font-black tracking-[0.1em] uppercase">GLOBAL VISIBILITY: ON</p>
-                  </div>
-                </div>
-                <ChevronRight size={24} className="text-gray-700 group-hover:text-white transition-colors" />
-             </button>
-
-             <div className="w-full p-6 bg-dark-900 rounded-[32px] border border-white/5 shadow-2xl flex items-center justify-between group">
-                <div className="flex items-center space-x-5">
-                  <div className="w-14 h-14 bg-gray-800/30 text-gray-400 rounded-2xl flex items-center justify-center border border-white/5">
-                    {isDarkMode ? <Moon size={28} strokeWidth={2.5} /> : <Sun size={28} strokeWidth={2.5} />}
-                  </div>
-                  <div className="text-left">
-                    <h4 className="font-bold text-white text-lg tracking-tight">Stealth Theme</h4>
-                    <p className="text-[10px] text-gray-500 font-black tracking-[0.1em] uppercase">AUTO ADAPTIVE</p>
-                  </div>
-                </div>
+             {[
+               { icon: Sparkles, label: "Spark Premium", sub: "Unlock all features", color: "text-amber-500", bg: "bg-amber-500/10", route: "/paywall" },
+               { icon: Shield, label: "Safety Center", sub: "Verified secure", color: "text-brand-blue", bg: "bg-brand-blue/10", route: "/safety" },
+               { icon: Settings, label: "Preferences", sub: "Discovery controls", color: "text-white/70", bg: "bg-white/5", route: "/preferences" },
+             ].map((item, i) => (
                 <button 
-                  onClick={() => setIsDarkMode(!isDarkMode)}
-                  className={`w-14 h-7 rounded-full transition-all flex items-center p-1.5 ${isDarkMode ? 'bg-brand-red justify-end' : 'bg-gray-800 justify-start'}`}
+                  key={i}
+                  onClick={() => item.route !== '#' ? navigate(item.route) : null}
+                  className="w-full py-4 flex items-center justify-between group bg-transparent border-none outline-none"
                 >
-                  <div className="w-4 h-4 bg-white rounded-full shadow-lg" />
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-12 h-12 ${item.bg} ${item.color} rounded-full flex items-center justify-center border border-white/5`}>
+                      <item.icon size={20} strokeWidth={2} />
+                    </div>
+                    <div className="text-left">
+                      <h4 className="font-semibold text-white text-sm tracking-wide">{item.label}</h4>
+                      <p className="text-[10px] text-white/40 uppercase tracking-widest mt-0.5">{item.sub}</p>
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="text-white/20 group-hover:text-white transition-colors" />
                 </button>
-             </div>
+             ))}
 
-             <button className="w-full pt-8 flex items-center justify-center space-x-3 text-gray-600 font-black text-xs tracking-[0.2em] uppercase hover:text-brand-red transition-all">
+             <button className="w-full mt-10 p-5 rounded-3xl border border-white/10 text-white/40 text-xs font-bold tracking-[0.2em] uppercase hover:bg-white/5 hover:text-white transition-all flex items-center justify-center space-x-2">
                 <LogOut size={16} />
-                <span>Terminate Session</span>
+                <span>Sign Out</span>
              </button>
           </div>
         ) : (
-          <div className="space-y-4">
-            <button className="w-full py-5 bg-dark-950 border border-white/10 text-gray-400 rounded-3xl font-black text-xs tracking-[0.2em] uppercase hover:text-white hover:border-white transition-all flex items-center justify-center space-x-3">
-               <Shield size={20} />
-               <span>REPORT PROFILE</span>
-            </button>
-            <button className="w-full py-5 bg-brand-red/10 text-brand-red rounded-3xl font-black text-xs tracking-[0.2em] uppercase hover:bg-brand-red/20 transition-all flex items-center justify-center space-x-3 border border-brand-red/20">
-               <Lock size={20} />
-               <span>BLOCK SESSION</span>
-            </button>
+          <div className="grid grid-cols-2 gap-4 mt-4">
+             <button className="w-full py-4 bg-white/5 hover:bg-white/10 transition-colors border border-white/10 rounded-full text-white text-xs font-bold tracking-[0.2em] uppercase flex items-center justify-center space-x-2">
+                <Shield size={16} />
+                <span>Report</span>
+             </button>
+             <button className="w-full py-4 bg-red-500/10 hover:bg-red-500/20 text-red-500 transition-colors border border-red-500/20 rounded-full text-xs font-bold tracking-[0.2em] uppercase flex items-center justify-center space-x-2">
+                <Lock size={16} />
+                <span>Block</span>
+             </button>
           </div>
         )}
+        </div>
       </div>
     </motion.div>
   );

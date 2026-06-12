@@ -1,8 +1,8 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
-import { Wallet } from './entities/wallet.entity.ts';
-import { Transaction, TransactionType, TransactionStatus } from './entities/transaction.entity.ts';
+import { Wallet } from './entities/wallet.entity';
+import { Transaction, TransactionType, TransactionStatus } from './entities/transaction.entity';
 
 @Injectable()
 export class FinanceService {

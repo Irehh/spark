@@ -2,7 +2,7 @@ import { WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayConnectio
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { Injectable } from '@nestjs/common';
-import { UserService } from '../user/user.service.ts';
+import { UserService } from '../user/user.service';
 
 @WebSocketGateway({
   cors: { origin: '*' },

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
-import { Wallet } from './wallet.entity.ts';
+import { Wallet } from './wallet.entity';
 
 export enum TransactionType {
   CREDIT = 'credit',

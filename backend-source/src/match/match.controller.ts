@@ -1,8 +1,8 @@
 import { Controller, Get, UseGuards, Request } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.ts';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Or } from 'typeorm';
-import { Match } from './entities/match.entity.ts';
+import { Match } from './entities/match.entity';
 
 @Controller('api/matches')
 @UseGuards(JwtAuthGuard)
