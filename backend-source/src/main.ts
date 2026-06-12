@@ -29,6 +29,6 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, document);
 
   await app.listen(3030);
-  console.log(`Backend is running on: ${await app.getUrl()}`);
+  console.log(`Backend is running on: ${process.env.FRONTEND_URL}`);
 }
 bootstrap();
