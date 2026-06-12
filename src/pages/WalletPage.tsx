@@ -18,15 +18,20 @@ export const WalletPage = () => {
   const [currency, setCurrency] = useState('USD');
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isLoadingWallet, setIsLoadingWallet] = useState(true);
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
-    // In a real app we'd fetch from /api/finance/wallet and /api/finance/transactions
-    setBalance(50.00);
-    setTransactions([
-      { id: '1', type: 'credit', amount: 50.00, currency: 'USD', status: 'completed', description: 'Deposit via Card', createdAt: new Date().toISOString() },
-      { id: '2', type: 'debit', amount: 4.99, currency: 'USD', status: 'completed', description: 'Super Like Bundle', createdAt: new Date(Date.now() - 86400000).toISOString() }
-    ]);
+    // Simulate real fetching delay for wallet & transactions
+    const timer = setTimeout(() => {
+      setBalance(50.00);
+      setTransactions([
+        { id: '1', type: 'credit', amount: 50.00, currency: 'USD', status: 'completed', description: 'Deposit via Card', createdAt: new Date().toISOString() },
+        { id: '2', type: 'debit', amount: 4.99, currency: 'USD', status: 'completed', description: 'Super Like Bundle', createdAt: new Date(Date.now() - 86400000).toISOString() }
+      ]);
+      setIsLoadingWallet(false);
+    }, 1500);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleDeposit = () => {
@@ -116,8 +121,22 @@ export const WalletPage = () => {
             </h2>
             
             <div className="space-y-4">
-              {transactions.map(tx => (
-                <div key={tx.id} className="flex items-center justify-between p-4 bg-dark-950 border border-white/5 rounded-3xl">
+              {isLoadingWallet ? (
+                [...Array(3)].map((_, i) => (
+                  <div key={i} className="flex items-center justify-between p-4 bg-dark-950 border border-white/5 rounded-3xl animate-pulse">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-12 h-12 rounded-2xl bg-dark-800"></div>
+                      <div className="space-y-2">
+                        <div className="w-32 h-4 bg-dark-800 rounded"></div>
+                        <div className="w-24 h-3 bg-dark-800 rounded"></div>
+                      </div>
+                    </div>
+                    <div className="w-20 h-6 bg-dark-800 rounded"></div>
+                  </div>
+                ))
+              ) : transactions.length > 0 ? (
+                transactions.map(tx => (
+                  <div key={tx.id} className="flex items-center justify-between p-4 bg-dark-950 border border-white/5 rounded-3xl">
                   <div className="flex items-center space-x-4">
                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${tx.type === 'credit' ? 'bg-green-500/10 text-green-500' : 'bg-brand-red/10 text-brand-red'}`}>
                       {tx.type === 'credit' ? <ArrowDownLeft size={24} /> : <ArrowUpRight size={24} />}
@@ -130,8 +149,11 @@ export const WalletPage = () => {
                   <div className={`text-lg font-black ${tx.type === 'credit' ? 'text-green-500' : 'text-white'}`}>
                     {tx.type === 'credit' ? '+' : '-'}${tx.amount.toFixed(2)}
                   </div>
-                </div>
-              ))}
+                  </div>
+                ))
+              ) : (
+                <div className="text-center p-8 text-gray-500 text-sm">No transactions yet.</div>
+              )}
             </div>
           </div>
         </div>

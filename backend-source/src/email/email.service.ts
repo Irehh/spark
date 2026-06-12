@@ -13,7 +13,7 @@ export class EmailService {
     private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
   ) {
-    this.appUrl = this.configService.get<string>('APP_URL') || 'http://localhost:3000';
+    this.appUrl = this.configService.get<string>('FRONTEND_URL') || this.configService.get<string>('APP_URL') || 'http://localhost:5173';
   }
 
   async sendVerificationEmail(email: string, name: string, token: string) {

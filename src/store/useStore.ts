@@ -6,7 +6,8 @@ interface AppState {
   discoveryProfiles: UserProfile[];
   matches: Match[];
   notifications: Notification[];
-  isLoading: boolean;
+  isDiscoveryLoading: boolean;
+  isMatchesLoading: boolean;
   error: string | null;
 
   // Actions
@@ -17,6 +18,7 @@ interface AppState {
   addNotification: (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => void;
   markNotificationRead: (id: string) => void;
   updateProfile: (updates: Partial<UserProfile>) => void;
+  logout: () => void;
 }
 
 export const useStore = create<AppState>((set, get) => ({
@@ -35,17 +37,18 @@ export const useStore = create<AppState>((set, get) => ({
   discoveryProfiles: [],
   matches: [],
   notifications: [],
-  isLoading: false,
+  isDiscoveryLoading: false,
+  isMatchesLoading: false,
   error: null,
 
   fetchDiscovery: async () => {
-    set({ isLoading: true });
+    set({ isDiscoveryLoading: true });
     try {
       const res = await fetch('/api/discovery');
       const data = await res.json();
-      set({ discoveryProfiles: data, isLoading: false });
+      set({ discoveryProfiles: data, isDiscoveryLoading: false });
     } catch (err) {
-      set({ error: 'Failed to fetch profiles', isLoading: false });
+      set({ error: 'Failed to fetch profiles', isDiscoveryLoading: false });
     }
   },
 
@@ -80,12 +83,14 @@ export const useStore = create<AppState>((set, get) => ({
   },
 
   fetchMatches: async () => {
+    set({ isMatchesLoading: true });
     try {
       const res = await fetch('/api/matches');
       const data = await res.json();
-      set({ matches: data });
+      set({ matches: data, isMatchesLoading: false });
     } catch (err) {
       console.error(err);
+      set({ isMatchesLoading: false });
     }
   },
 
@@ -122,5 +127,9 @@ export const useStore = create<AppState>((set, get) => ({
     set(state => ({
       user: state.user ? { ...state.user, ...updates } : null
     }));
+  },
+
+  logout: () => {
+    set({ user: null });
   },
 }));

@@ -16,7 +16,20 @@ export default function LoginPage() {
       setError('Please fill in all fields');
       return;
     }
-    // Simulate login for now - eventually integrate with backend
+    // Simulate login for now
+    useStore.setState({
+      user: {
+        id: 'me',
+        name: 'Alex',
+        age: 28,
+        bio: 'Looking for meaningful connections.',
+        images: ['https://images.unsplash.com/photo-1539571696357-5a69c17a67c6'],
+        location: 'New York, USA',
+        interests: ['Photography', 'Coffee', 'Design'],
+        verified: true,
+        prompts: []
+      }
+    });
     navigate('/');
   };
 

@@ -159,9 +159,18 @@ const BottomNav = () => {
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
 
 // Layout Wrappers
+import { Navigate } from 'react-router-dom';
+
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
+  const user = useStore(state => state.user);
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
   return (
     <div className="flex h-screen bg-dark-950 text-white font-sans overflow-hidden">
       <Sidebar />
@@ -203,6 +212,7 @@ export default function App() {
           <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
           <Route path="/register" element={<AuthLayout><RegisterPage /></AuthLayout>} />
           <Route path="/reset-password" element={<AuthLayout><ResetPasswordPage /></AuthLayout>} />
+          <Route path="/verify-email" element={<AuthLayout><VerifyEmailPage /></AuthLayout>} />
 
           {/* App Routes */}
           <Route path="/" element={<AppLayout><DiscoveryPage /></AppLayout>} />

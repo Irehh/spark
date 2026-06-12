@@ -113,7 +113,12 @@ const ProfilePage = () => {
                 </button>
              ))}
 
-             <button className="w-full mt-10 p-5 rounded-3xl border border-white/10 text-white/40 text-xs font-bold tracking-[0.2em] uppercase hover:bg-white/5 hover:text-white transition-all flex items-center justify-center space-x-2">
+             <button 
+                onClick={() => {
+                   useStore.getState().logout();
+                   navigate('/login');
+                }}
+                className="w-full mt-10 p-5 rounded-3xl border border-white/10 text-white/40 text-xs font-bold tracking-[0.2em] uppercase hover:bg-white/5 hover:text-white transition-all flex items-center justify-center space-x-2">
                 <LogOut size={16} />
                 <span>Sign Out</span>
              </button>

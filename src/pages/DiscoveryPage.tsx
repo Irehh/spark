@@ -73,7 +73,7 @@ const ProfileCard = ({ profile, onSwipe }: any) => {
 };
 
 const DiscoveryPage = () => {
-  const { user, discoveryProfiles, likeProfile } = useStore();
+  const { user, discoveryProfiles, likeProfile, isDiscoveryLoading } = useStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showMatch, setShowMatch] = useState<any>(null);
   
@@ -139,8 +139,29 @@ const DiscoveryPage = () => {
       </header>
 
       <div className="relative flex-1 mb-8">
-        <AnimatePresence>
-          {currentIndex < discoveryProfiles.length ? (
+        <AnimatePresence mode="wait">
+          {isDiscoveryLoading ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 bg-dark-900 rounded-[40px] border border-white/5 px-4 lg:px-0"
+            >
+              <div className="w-full h-full bg-dark-800 rounded-[40px] overflow-hidden animate-pulse relative shadow-2xl border border-white/5">
+                <div className="absolute top-10 left-10 w-24 h-8 bg-dark-700 rounded-lg"></div>
+                <div className="absolute inset-x-0 bottom-0 p-10 pt-32 bg-gradient-to-t from-dark-950 to-transparent">
+                  <div className="w-24 h-6 bg-dark-700 rounded mb-4"></div>
+                  <div className="w-1/2 h-8 bg-dark-700 rounded mb-6"></div>
+                  <div className="w-1/3 h-4 bg-dark-700 rounded mb-8"></div>
+                  <div className="flex gap-2">
+                    <div className="w-16 h-6 bg-dark-700 rounded"></div>
+                    <div className="w-20 h-6 bg-dark-700 rounded"></div>
+                    <div className="w-14 h-6 bg-dark-700 rounded"></div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ) : currentIndex < discoveryProfiles.length ? (
             <ProfileCard
               key={currentProfile.id}
               profile={currentProfile}

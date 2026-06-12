@@ -13,9 +13,11 @@ const ChatPage = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [isOtherTyping, setIsOtherTyping] = useState(false);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const socketRef = useRef<Socket | null>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
 
   const match = matches.find(m => m.id === matchId);
 
@@ -61,6 +63,8 @@ const ChatPage = () => {
       setMessages(data);
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsLoadingMessages(false);
     }
   };
 
@@ -167,35 +171,52 @@ const ChatPage = () => {
       </header>
 
       <div className="flex-1 overflow-y-auto p-8 space-y-6 flex flex-col">
-        <div className="flex flex-col items-center py-16 opacity-10">
-           <div className="w-20 h-20 bg-dark-800 rounded-full flex items-center justify-center mb-6">
-             <Heart size={40} className="text-brand-red" fill="currentColor" />
-           </div>
-           <p className="text-xs font-black tracking-[0.3em] text-white text-center uppercase">
-             Connection established on<br/>
-             {new Date(match?.timestamp || '').toLocaleDateString()}
-           </p>
-        </div>
-
-        {messages.map((msg, i) => (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            key={msg.id}
-            className={`flex ${msg.senderId === 'me' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div className={`max-w-[85%] p-5 rounded-[32px] text-[15px] leading-relaxed shadow-lg ${
-              msg.senderId === 'me' 
-                ? 'bg-brand-red text-white rounded-tr-none shadow-brand-red/10' 
-                : 'bg-dark-900 text-gray-200 border border-dark-800 rounded-tl-none'
-            }`}>
-              {msg.text}
-              <div className={`text-[10px] mt-2 font-bold opacity-40 uppercase tracking-widest ${msg.senderId === 'me' ? 'text-white' : 'text-gray-500'}`}>
-                {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </div>
+        {isLoadingMessages ? (
+          <div className="flex flex-col space-y-6 flex-1 pt-12 animate-pulse">
+             {[...Array(4)].map((_, i) => (
+                <div key={i} className={`flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                  <div className={`max-w-[70%] md:max-w-[60%] p-5 rounded-[32px] w-64 h-16 ${
+                    i % 2 === 0 
+                      ? 'bg-dark-900 border border-dark-800 rounded-tl-none' 
+                      : 'bg-dark-800 rounded-tr-none'
+                  }`}>
+                  </div>
+                </div>
+             ))}
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-col items-center py-16 opacity-10">
+               <div className="w-20 h-20 bg-dark-800 rounded-full flex items-center justify-center mb-6">
+                 <Heart size={40} className="text-brand-red" fill="currentColor" />
+               </div>
+               <p className="text-xs font-black tracking-[0.3em] text-white text-center uppercase">
+                 Connection established on<br/>
+                 {new Date(match?.timestamp || '').toLocaleDateString()}
+               </p>
             </div>
-          </motion.div>
-        ))}
+
+            {messages.map((msg, i) => (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                key={msg.id}
+                className={`flex ${msg.senderId === 'me' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div className={`max-w-[85%] p-5 rounded-[32px] text-[15px] leading-relaxed shadow-lg ${
+                  msg.senderId === 'me' 
+                    ? 'bg-brand-red text-white rounded-tr-none shadow-brand-red/10' 
+                    : 'bg-dark-900 text-gray-200 border border-dark-800 rounded-tl-none'
+                }`}>
+                  {msg.text}
+                  <div className={`text-[10px] mt-2 font-bold opacity-40 uppercase tracking-widest ${msg.senderId === 'me' ? 'text-white' : 'text-gray-500'}`}>
+                    {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </>
+        )}
         
         <AnimatePresence>
           {isOtherTyping && (
