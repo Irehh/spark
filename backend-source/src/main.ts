@@ -28,27 +28,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  await app.listen(3030);
-  console.log(`Backend is running on: http://localhost:${process.env.PORT || 3030}`);
-  //log api requests and responses in development mode
-  if (process.env.NODE_ENV === 'development') {
-    app.use((req, res, next) => {
-      console.log(`${req.method} ${req.url}`);
-      const oldWrite = res.write;
-      const oldEnd = res.end;
-      const chunks: any[] = [];
-      res.write = (chunk) => {
-        chunks.push(chunk);
-        return oldWrite.apply(res, arguments);
-      };
-      res.end = (chunk) => {
-        if (chunk) chunks.push(chunk);
-        const body = Buffer.concat(chunks).toString('utf8');
-        console.log(`Response: ${res.statusCode} ${body}`);
-        return oldEnd.apply(res, arguments);
-      };
-      next();
-    });
-  }
+  await app.listen(3000);
+  console.log(`Backend is running on: ${await app.getUrl()}`);
 }
 bootstrap();

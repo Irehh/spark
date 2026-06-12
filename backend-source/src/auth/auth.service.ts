@@ -44,12 +44,9 @@ export class AuthService {
     };
   }
 
-  
   async register(userData: Partial<User>) {
     const existing = await this.userRepository.findOneBy({ email: userData.email });
     if (existing) throw new BadRequestException('Email already in use.');
-    if (!userData.password) throw new BadRequestException('Password is required.');
-
 
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     const verificationToken = crypto.randomBytes(32).toString('hex');
@@ -57,7 +54,6 @@ export class AuthService {
     const user = this.userRepository.create({
       ...userData,
       password: hashedPassword,
-      fullName: userData.fullName || userData.email.split('@')[0],
       verificationToken
     });
     

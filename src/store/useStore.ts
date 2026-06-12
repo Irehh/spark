@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { UserProfile, Match, Message, Notification } from '../types';
+import api from '../lib/api';
 
 interface AppState {
   user: UserProfile | null;
@@ -44,8 +45,8 @@ export const useStore = create<AppState>((set, get) => ({
   fetchDiscovery: async () => {
     set({ isDiscoveryLoading: true });
     try {
-      const res = await fetch('/api/discovery');
-      const data = await res.json();
+      const res = await api.get('/discovery');
+      const data = res.data;
       set({ discoveryProfiles: data, isDiscoveryLoading: false });
     } catch (err) {
       set({ error: 'Failed to fetch profiles', isDiscoveryLoading: false });
@@ -54,12 +55,8 @@ export const useStore = create<AppState>((set, get) => ({
 
   likeProfile: async (targetId: string) => {
     try {
-      const res = await fetch('/api/interactions/like', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ targetId })
-      });
-      const data = await res.json();
+      const res = await api.post('/discovery/like', { targetId });
+      const data = res.data;
       
       if (data.status === 'match') {
         set(state => ({ 
@@ -85,8 +82,8 @@ export const useStore = create<AppState>((set, get) => ({
   fetchMatches: async () => {
     set({ isMatchesLoading: true });
     try {
-      const res = await fetch('/api/matches');
-      const data = await res.json();
+      const res = await api.get('/matches');
+      const data = res.data;
       set({ matches: data, isMatchesLoading: false });
     } catch (err) {
       console.error(err);
@@ -96,11 +93,7 @@ export const useStore = create<AppState>((set, get) => ({
 
   sendChatMessage: async (matchId: string, text: string) => {
     try {
-      await fetch('/api/chat/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ matchId, text })
-      });
+      await api.post('/chat/send', { matchId, text });
     } catch (err) {
       console.error(err);
     }
@@ -130,6 +123,7 @@ export const useStore = create<AppState>((set, get) => ({
   },
 
   logout: () => {
+    localStorage.removeItem('token');
     set({ user: null });
   },
 }));

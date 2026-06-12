@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Flame, Mail, Lock, LogIn } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import api from '../lib/api';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -10,27 +11,39 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       setError('Please fill in all fields');
       return;
     }
-    // Simulate login for now
-    useStore.setState({
-      user: {
-        id: 'me',
-        name: 'Alex',
-        age: 28,
-        bio: 'Looking for meaningful connections.',
-        images: ['https://images.unsplash.com/photo-1539571696357-5a69c17a67c6'],
-        location: 'New York, USA',
-        interests: ['Photography', 'Coffee', 'Design'],
-        verified: true,
-        prompts: []
+    
+    try {
+      const response = await api.post('/auth/login', { email, password });
+      const data = response.data;
+      
+      if (data.access_token) {
+        localStorage.setItem('token', data.access_token);
       }
-    });
-    navigate('/');
+      
+      // Fetch full profile info or use the returned user if available
+      useStore.setState({
+        user: {
+          id: data.user?.id || 'me',
+          name: data.user?.fullName || 'User',
+          age: 28,
+          bio: 'Looking for meaningful connections.',
+          images: ['https://images.unsplash.com/photo-1539571696357-5a69c17a67c6'],
+          location: 'New York, USA',
+          interests: ['Photography', 'Coffee', 'Design'],
+          verified: true,
+          prompts: []
+        }
+      });
+      navigate('/');
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Invalid credentials');
+    }
   };
 
   return (

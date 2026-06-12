@@ -26,7 +26,6 @@ export class FinanceController {
   @Post('spend')
   async spend(@Request() req, @Body('amount') amount: number, @Body('description') description: string) {
     const wallet = await this.financeService.getWallet(req.user.id);
-    const reference = `SPEND_${Date.now()}`;
-    return this.financeService.processTransaction(wallet.id, amount, TransactionType.DEBIT, reference, description);
+    return this.financeService.processTransaction(wallet.id, amount, TransactionType.DEBIT, \`SPEND_\${Date.now()}\`, description);
   }
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Flame, Mail, Lock, UserPlus, User } from 'lucide-react';
+import api from '../lib/api';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -10,14 +11,23 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email || !password) {
       setError('Please fill in all fields');
       return;
     }
-    // Simulate registration
-    navigate('/');
+    
+    try {
+      await api.post('/auth/register', {
+        fullName: name,
+        email,
+        password
+      });
+      navigate('/login');
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Registration failed');
+    }
   };
 
   return (

@@ -48,6 +48,6 @@ export class UserService {
       // Example: if (action.type === 'LIKE') { ... }
       syncedCount++;
     }
-    return { success: true, syncedCount, unsynced: 0 };
+    return { success: true, syncedCount, un-synced: 0 };
   }
 }

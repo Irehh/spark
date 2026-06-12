@@ -1,9 +1,13 @@
-import 'dotenv/config';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { User } from './user/entities/user.entity';
+import { Like, Match } from './match/entities/match.entity';
+import { Message } from './chat/entities/message.entity';
+import { Report, Block } from './safety/entities/safety.entity';
+import { Notification } from './notification/entities/notification.entity';
 import { DiscoveryModule } from './discovery/discovery.module';
 import { ChatModule } from './chat/chat.module';
 import { AuthModule } from './auth/auth.module';

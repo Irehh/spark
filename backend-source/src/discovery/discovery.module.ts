@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../user/entities/user.entity';
-import { Like, Match } from '../match/entities/match.entity';
+import { Like, Match } from './entities/match.entity';
 import { DiscoveryService } from './discovery.service';
 import { DiscoveryController } from './discovery.controller';
 

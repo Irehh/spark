@@ -8,16 +8,14 @@ interface PaywallModalProps {
   featureName: string;
 }
 
+import api from '../lib/api';
+
 export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, featureName }) => {
   const handleUpgrade = async (tier: string) => {
     // Call the checkout endpoint
     try {
-      const response = await fetch('/api/subscriptions/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer mock_token` },
-        body: JSON.stringify({ tier })
-      });
-      const data = await response.json();
+      const response = await api.post('/subscriptions/checkout', { tier });
+      const data = response.data;
       if (data.url) {
         window.location.href = data.url; // Redirect to Stripe checkout
       }

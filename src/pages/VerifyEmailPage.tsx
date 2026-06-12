@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { CheckCircle, XCircle, Loader, Flame } from 'lucide-react';
 import { useStore } from '../store/useStore';
 
+import api from '../lib/api';
+
 export default function VerifyEmailPage() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
@@ -20,28 +22,13 @@ export default function VerifyEmailPage() {
 
     const verifyToken = async () => {
       try {
-        // Use Vite's env VITE_API_URL or fallback to /api to use the proxy
-        const apiUrl = import.meta.env.VITE_API_URL || '/api';
-        
-        const response = await fetch(`${apiUrl}/auth/verify-email?token=${token}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          setStatus('success');
-          setMessage(data.message || 'Your email has been verified successfully!');
-        } else {
-          setStatus('error');
-          setMessage(data.message || 'Verification failed. The token may be invalid or expired.');
-        }
-      } catch (error) {
+        const response = await api.get(`/auth/verify-email?token=${token}`);
+        const data = response.data;
+        setStatus('success');
+        setMessage(data.message || 'Your email has been verified successfully!');
+      } catch (error: any) {
         setStatus('error');
-        setMessage('A network error occurred. Please try again later.');
+        setMessage(error.response?.data?.message || 'Verification failed. The token may be invalid or expired.');
       }
     };
 

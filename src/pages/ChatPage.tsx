@@ -5,6 +5,7 @@ import { Send, ChevronLeft, Shield, MoreVertical, Phone, Video, Info, MessageCir
 import { io, Socket } from 'socket.io-client';
 import { useStore } from '../store/useStore';
 import { Message } from '../types';
+import api from '../lib/api';
 
 const ChatPage = () => {
   const { matchId } = useParams();
@@ -24,8 +25,10 @@ const ChatPage = () => {
   useEffect(() => {
     if (matchId) {
        // Establish Socket.IO connection
-       const socket = io('http://localhost:3000/chat', {
-         auth: { token: 'mock-token' },
+       const socketUrl = import.meta.env.VITE_SOCKET_URL || '';
+       const token = localStorage.getItem('token') || '';
+       const socket = io(`${socketUrl}/chat`, {
+         auth: { token },
          transports: ['websocket']
        });
        socketRef.current = socket;
@@ -58,8 +61,8 @@ const ChatPage = () => {
   const fetchMessages = async () => {
     if (!matchId) return;
     try {
-      const res = await fetch(`/api/chat/${matchId}`);
-      const data = await res.json();
+      const res = await api.get(`/chat/${matchId}`);
+      const data = res.data;
       setMessages(data);
     } catch (err) {
       console.error(err);

@@ -20,7 +20,7 @@ export class User {
   @Column()
   fullName: string;
 
-  @Column({ type: 'date', nullable: true  })
+  @Column({ type: 'date' })
   birthDate: Date;
 
   @Column({ type: 'enum', enum: Gender, nullable: true })
